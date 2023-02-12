@@ -1,0 +1,67 @@
+version: "2"
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.7
+    restart: unless-stopped
+    depends_on:
+      - "es01"
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: changeme
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "xpack.security.enabled=true"
+      - "xpack.security.authc.api_key.enabled=true"
+      - "ELASTIC_PASSWORD=changeme"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+  mariadb:
+    image: mariadb:10.2
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: mybb
+      MYSQL_USER: mybb
+      MYSQL_PASSWORD: changeme
+    networks:
+      - bridged
+    ports:
+      - "3306:3306"
+    restart: on-failure
+  keycloak:
+    build: keycloak_auth
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=mariadb
+      - KC_DB_URL_HOST=mariadb
+      - KC_DB_URL_DATABASE=mybb
+      - KC_DB_URL_PORT=3306
+      - KC_DB_USERNAME=mybb
+      - KC_DB_PASSWORD=changeme
+      - KC_HOSTNAME=localhost
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HTTP_ENABLED=true
+      - KC_PROXY=edge
+    ports:
+      - "8443:8443"
+      - "8080:8080"
+    networks:
+        - bridged
+networks:
+    bridged:
+        driver: bridge
