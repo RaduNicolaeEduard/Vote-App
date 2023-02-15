@@ -16,15 +16,15 @@ services:
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
     environment:
-      - node.name
-      - cluster.name
-      - discovery.seed_hosts
-      - cluster.initial_master_nodes
-      - bootstrap.memory_lock
-      - ES_JAVA_OPTS
-      - xpack.security.enabled
-      - xpack.security.authc.api_key.enabled
-      - ELASTIC_PASSWORD
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "xpack.security.enabled=true"
+      - "xpack.security.authc.api_key.enabled=true"
+      - "ELASTIC_PASSWORD=changeme"
     ulimits:
       memlock:
         soft: -1
@@ -48,18 +48,18 @@ services:
   keycloak:
     build: keycloak_auth
     environment:
-      - KEYCLOAK_ADMIN
-      - KEYCLOAK_ADMIN_PASSWORD
-      - KC_DB
-      - KC_DB_URL_HOST
-      - KC_DB_URL_DATABASE
-      - KC_DB_URL_PORT
-      - KC_DB_USERNAME
-      - KC_DB_PASSWORD
-      - KC_HOSTNAME
-      - KC_HOSTNAME_STRICT_HTTPS
-      - KC_HTTP_ENABLED
-      - KC_PROXY
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=mariadb
+      - KC_DB_URL_HOST=mariadb
+      - KC_DB_URL_DATABASE=mybb
+      - KC_DB_URL_PORT=3306
+      - KC_DB_USERNAME=mybb
+      - KC_DB_PASSWORD=changeme
+      - KC_HOSTNAME=localhost
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HTTP_ENABLED=true
+      - KC_PROXY=edge
     expose:
       - 8443
       - 8080
