@@ -62,6 +62,12 @@ services:
       - "8080:8080"
     networks:
         - bridged
+  frontend:
+    build: frontend
+    ports:
+      - "80:80"
+  es-search:
+    build: es-service
 networks:
     bridged:
         driver: bridge
