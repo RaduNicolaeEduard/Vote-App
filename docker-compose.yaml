@@ -11,6 +11,8 @@ services:
       ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
       ELASTICSEARCH_USERNAME: elastic
       ELASTICSEARCH_PASSWORD: changeme
+    networks:
+      - demo
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
     container_name: es01
@@ -30,6 +32,8 @@ services:
         hard: -1
     ports:
       - 9200:9200
+    networks:
+      - demo
   mariadb:
     image: mariadb:10.2
     environment:
@@ -38,9 +42,9 @@ services:
       MYSQL_USER: mybb
       MYSQL_PASSWORD: changeme
     networks:
-      - bridged
-    ports:
-      - "3306:3306"
+      - demo
+    expose:
+      - 3306
     restart: on-failure
   keycloak:
     build: keycloak_auth
@@ -57,17 +61,24 @@ services:
       - KC_HOSTNAME_STRICT_HTTPS=false
       - KC_HTTP_ENABLED=true
       - KC_PROXY=edge
-    ports:
-      - "8443:8443"
-      - "8080:8080"
+    expose:
+      - 8443
+      - 8080
     networks:
-        - bridged
+      - demo
   frontend:
+    networks:
+      - demo
     build: frontend
-    ports:
-      - "80:80"
+    expose:
+      - 80
   es-search:
+    expose:
+      - 80
+    networks:
+      - demo
     build: es-service
 networks:
-    bridged:
-        driver: bridge
+    demo:
+      external:
+          name: demo
