@@ -34,34 +34,42 @@ def connect_to_elastic():
 es = connect_to_elastic()
 
 
-@app.route("/add/election", methods=["POST"])
+@app.route("/add/election", methods=["POST, OPTIONS"])
 @cross_origin()
 @oidc.accept_token(require_token=True, scopes_required=['openid'])
 def add_election():
-    # Print user info
-    # pprint(request.form)
-    # pprint(request.form['name'])
-    # print file
-    pprint(request.files['file'])
-    # pprint(g.oidc_token_info)
-    file = request.files['file']
-    if file and allowed_file(file.filename):
-        output = upload_file_to_s3(file)
-        print(output)
-    print(file)
-    election = {
-        "name": request.form['name'],
-        "description": request.form['description'],
-        "start_date": "2020-01-01",
-        "end_date": "2020-01-01",
-        "created_by": g.oidc_token_info['sub'],
-        "created_date": date.today(),
-        "type": request.form['type'],
-        "file": f"https://s3.eu-west-1.amazonaws.com/{os.environ.get('AWS_BUCKET_NAME')}/{output}"
-    }
-    res = es.index(index="elections", body=election)
-    # pprint(res)
-    return "200"
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+        return '', 200, headers
+    else:
+        # Print user info
+        # pprint(request.form)
+        # pprint(request.form['name'])
+        # print file
+        pprint(request.files['file'])
+        # pprint(g.oidc_token_info)
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            output = upload_file_to_s3(file)
+            print(output)
+        print(file)
+        election = {
+            "name": request.form['name'],
+            "description": request.form['description'],
+            "start_date": "2020-01-01",
+            "end_date": "2020-01-01",
+            "created_by": g.oidc_token_info['sub'],
+            "created_date": date.today(),
+            "type": request.form['type'],
+            "file": f"https://s3.eu-west-1.amazonaws.com/{os.environ.get('AWS_BUCKET_NAME')}/{output}"
+        }
+        res = es.index(index="elections", body=election)
+        # pprint(res)
+        return "200"
 
 
 @app.route("/elections", methods=["POST", "GET"])
