@@ -34,7 +34,7 @@ def connect_to_elastic():
 es = connect_to_elastic()
 
 
-@app.route("/add/election", methods=["POST, OPTIONS"])
+@app.route("/add/election", methods=["POST"])
 @cross_origin()
 @oidc.accept_token(require_token=True, scopes_required=['openid'])
 def add_election():
