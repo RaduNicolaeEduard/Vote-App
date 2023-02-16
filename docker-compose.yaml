@@ -8,9 +8,9 @@ services:
     ports:
       - 5601:5601
     environment:
-      ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: changeme
+      - ELASTICSEARCH_HOSTS='["http://es01:9200"]'
+      - ELASTICSEARCH_USERNAME
+      - ELASTICSEARCH_PASSWORD
     networks:
       - demo
   es01:
@@ -24,7 +24,7 @@ services:
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
       - "xpack.security.enabled=true"
       - "xpack.security.authc.api_key.enabled=true"
-      - "ELASTIC_PASSWORD=changeme"
+      - ELASTIC_PASSWORD
     ulimits:
       memlock:
         soft: -1
@@ -36,10 +36,10 @@ services:
   mariadb:
     image: mariadb:10.2
     environment:
-      MYSQL_ROOT_PASSWORD: changeme
-      MYSQL_DATABASE: mybb
-      MYSQL_USER: mybb
-      MYSQL_PASSWORD: changeme
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
     networks:
       - demo
     expose:
@@ -48,14 +48,14 @@ services:
   keycloak:
     build: keycloak_auth
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_ADMIN
+      - KEYCLOAK_ADMIN_PASSWORD
       - KC_DB=mariadb
       - KC_DB_URL_HOST=mariadb
       - KC_DB_URL_DATABASE=mybb
       - KC_DB_URL_PORT=3306
-      - KC_DB_USERNAME=mybb
-      - KC_DB_PASSWORD=changeme
+      - KC_DB_USERNAME
+      - KC_DB_PASSWORD
       - KC_HOSTNAME=auth.nicolae-eduard.com
       - KC_HOSTNAME_STRICT_HTTPS=false
       - KC_HTTP_ENABLED=true
