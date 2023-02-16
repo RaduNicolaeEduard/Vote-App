@@ -26,7 +26,7 @@ oidc = OpenIDConnect(app)
 
 def connect_to_elastic():
     print(f"Connecting to Elastic Location {os.environ.get('ES_HOST')} with user {os.environ.get('ES_USER')}")
-    es = Elasticsearch(f"http://${os.environ.get('ES_HOST')}:9200",
+    es = Elasticsearch(f"http://{os.environ.get('ES_HOST')}:9200",
                        basic_auth=(os.environ.get('ES_USER'), os.environ.get('ES_PASS')))
     return es
 
