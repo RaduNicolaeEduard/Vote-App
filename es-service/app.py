@@ -36,7 +36,7 @@ es = connect_to_elastic()
 
 @app.route("/add/election", methods=["POST, OPTIONS"])
 @cross_origin()
-@oidc.require_login
+@oidc.accept_token(require_token=True, scopes_required=['openid'])
 def add_election():
     # Print user info
     # pprint(request.form)

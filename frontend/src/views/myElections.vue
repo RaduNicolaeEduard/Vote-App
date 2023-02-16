@@ -123,7 +123,7 @@ export default {
                 formData.append('geoRestriction', this.geoRestriction);
                 formData.append('contry', this.contry);
                 formData.append('state', this.state);
-                this.$http.post ( 'http://127.0.0.1:5000/add/election', formData ).then(function () {
+                this.$http.post ( `${process.env.VUE_APP_BASE_URL}/add/election`, formData ).then(function () {
                 });
             }
             catch (error) {
