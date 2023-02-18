@@ -77,6 +77,14 @@ services:
     networks:
       - demo
     build: es-service
+  init:
+    build: es-init
+    environment:
+      - ELASTICSEARCH_HOST=http://es01:9200
+      - ELASTICSEARCH_USERNAME
+      - ELASTICSEARCH_PASSWORD
+    networks:
+      - demo
 networks:
     demo:
       external:
