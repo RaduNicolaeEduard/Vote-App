@@ -42,7 +42,7 @@ export default {
       <v-divider v-if="this.$keycloak.authenticated"></v-divider>
       <v-list nav dense>
         <v-list-item-group v-model="group" active-class="text--accent-4">
-          <v-list-item>
+          <v-list-item @click="$router.push({ name: 'home' })">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
@@ -59,12 +59,6 @@ export default {
               <v-icon>mdi-ballot</v-icon>
             </v-list-item-icon>
             <v-list-item-title>My Elections</v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Account</v-list-item-title>
           </v-list-item>
           <!-- <v-list-item v-if="this.$keycloak.authenticated && this.$keycloak.tokenParsed.is_staff"> -->
           <v-list-item v-if="this.$keycloak.authenticated" @click="$router.push({ name: 'admin' })">

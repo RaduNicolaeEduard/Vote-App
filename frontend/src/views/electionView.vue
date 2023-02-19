@@ -1,19 +1,11 @@
 <template>
     <div>
         <v-container>
-            <pre>
-                {{ tab }}
-            </pre>
             <v-card elevation="0">
                 <v-card-title>
                     <!-- search text field with cancel icon -->
-                    <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    label="Search"
-                    single-line
-                    hide-details
-                    ></v-text-field>
+                    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
+                        hide-details></v-text-field>
                 </v-card-title>
             </v-card>
         </v-container>
@@ -38,11 +30,11 @@
 
             <v-tabs-items v-model="tab">
                 <v-tab-item v-for="i in 4" :key="i" :value="'tab-' + i">
+                    <div class="election_view_padding">
                         <v-row>
                             <!-- No Data Card -->
                             <v-col v-if="emtpy_respnse">
                                 <v-container>
-
                                     <v-card>
                                         <v-card-title>
                                             <v-icon>mdi-information-outline</v-icon>
@@ -55,9 +47,10 @@
                                 </v-container>
                             </v-col>
                             <v-col v-for="election in elections" :key="election._id">
-                                <electioncard v-bind:file="election._source.file" />
+                                <electioncard v-bind:file="election._source.file" style="width:20em" />
                             </v-col>
                         </v-row>
+                    </div>
                 </v-tab-item>
             </v-tabs-items>
             <div ref="end"></div>
@@ -79,13 +72,13 @@ export default {
     beforeDestroy() {
         window.removeEventListener('scroll', this.scroll);
     },
-    watch:{
+    watch: {
         async search(new_search, old_search) {
             this.$store.dispatch('setLoading', true)
             let form = new FormData();
             form.append("search", new_search);
             form.append("type", "search");
-            await this.$http.post(`${process.env.VUE_APP_BASE_URL}/elections`,form).then(response => {
+            await this.$http.post(`${process.env.VUE_APP_BASE_URL}/elections`, form).then(response => {
                 this.elections = response.data.data;
                 this.scroll_id = response.data.scroll_id;
                 this.$store.dispatch('setLoading', false)
@@ -96,8 +89,8 @@ export default {
                 this.refreshTab();
             }
         },
-        async tab(new_tab){
-            if(new_tab == "tab-1"){
+        async tab(new_tab) {
+            if (new_tab == "tab-1") {
                 this.elections = [];
                 this.emtpy_respnse = false;
                 this.$store.dispatch('setLoading', true)
@@ -110,7 +103,7 @@ export default {
                     this.$store.dispatch('setLoading', false)
                 });
             }
-            if(new_tab == "tab-2"){
+            if (new_tab == "tab-2") {
                 this.elections = [];
                 this.emtpy_respnse = false;
                 this.$store.dispatch('setLoading', true)
@@ -125,7 +118,7 @@ export default {
                     this.$store.dispatch('setLoading', false)
                 });
             }
-            if(new_tab == "tab-3"){
+            if (new_tab == "tab-3") {
                 this.elections = [];
                 this.emtpy_respnse = false;
                 this.$store.dispatch('setLoading', true)
@@ -140,7 +133,7 @@ export default {
                     this.$store.dispatch('setLoading', false)
                 });
             }
-            if(new_tab == "tab-4"){
+            if (new_tab == "tab-4") {
                 this.elections = [];
                 this.emtpy_respnse = false;
                 this.$store.dispatch('setLoading', true)
@@ -155,7 +148,7 @@ export default {
                     this.$store.dispatch('setLoading', false)
                 });
             }
-            
+
         }
     },
     name: 'vote-card',
@@ -173,7 +166,7 @@ export default {
                 let form = new FormData();
                 form.append("scroll_id", this.scroll_id);
                 this.$store.dispatch('setLoading', true)
-                this.$http.post(`${process.env.VUE_APP_BASE_URL}/elections/scroll`,form).then(response => {
+                this.$http.post(`${process.env.VUE_APP_BASE_URL}/elections/scroll`, form).then(response => {
                     if (response.data.data.length == 0) {
                         this.$store.dispatch('setLoading', false)
                         return;
@@ -184,7 +177,7 @@ export default {
                     this.scroll_id = response.data.scroll_id;
                     this.$store.dispatch('setLoading', false)
                 });
-        }
+            }
         }
     },
     data: () => ({
@@ -197,3 +190,8 @@ export default {
     }),
 }
 </script>
+<style>
+.election_view_padding {
+    padding: 1em;
+}
+</style>

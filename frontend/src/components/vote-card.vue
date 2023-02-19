@@ -19,9 +19,6 @@
 
             <div class="my-4 text-subtitle-1">
                 Local Election
-                <pre>
-                    {{ file }}
-                </pre>
             </div>
 
             <div>Vote Now To do something</div>
@@ -33,119 +30,10 @@
 
         <v-card-text>
             <v-row>
-
-                <v-menu v-model="menu" bottom right transition="scale-transition" origin="top left">
-                    <template v-slot:activator="{ on }">
-                        <v-chip pill v-on="on" style="margin:10px">
-                            <v-avatar left>
-                                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                            </v-avatar>
-                            John Leider
-                        </v-chip>
-                    </template>
-                    <v-card width="300">
-                        <v-list dark>
-                            <v-list-item>
-                                <v-list-item-avatar>
-                                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title>John Leider</v-list-item-title>
-                                    <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action>
-                                    <v-btn icon @click="menu = false">
-                                        <v-icon>mdi-close-circle</v-icon>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                        <v-list>
-                            <v-list-item @click="() => { }">
-                                <v-list-item-action>
-                                    <v-icon>mdi-briefcase</v-icon>
-                                </v-list-item-action>
-                                <v-list-item-subtitle>john@gmail.com</v-list-item-subtitle>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-menu>
-                <v-menu v-model="menu" bottom right transition="scale-transition" origin="top left">
-                    <template v-slot:activator="{ on }">
-                        <v-chip pill v-on="on" style="margin:10px">
-                            <v-avatar left>
-                                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                            </v-avatar>
-                            John Leider
-                        </v-chip>
-                    </template>
-                    <v-card width="300">
-                        <v-list dark>
-                            <v-list-item>
-                                <v-list-item-avatar>
-                                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title>John Leider</v-list-item-title>
-                                    <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action>
-                                    <v-btn icon @click="menu = false">
-                                        <v-icon>mdi-close-circle</v-icon>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                        <v-list>
-                            <v-list-item @click="() => { }">
-                                <v-list-item-action>
-                                    <v-icon>mdi-briefcase</v-icon>
-                                </v-list-item-action>
-                                <v-list-item-subtitle>john@gmail.com</v-list-item-subtitle>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-menu>
-                <v-menu v-model="menu" bottom right transition="scale-transition" origin="top left">
-                    <template v-slot:activator="{ on }">
-                        <v-chip pill v-on="on" style="margin:10px">
-                            <v-avatar left>
-                                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                            </v-avatar>
-                            John Leider
-                        </v-chip>
-                    </template>
-                    <v-card width="300">
-                        <v-list dark>
-                            <v-list-item>
-                                <v-list-item-avatar>
-                                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title>John Leider</v-list-item-title>
-                                    <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action>
-                                    <v-btn icon @click="menu = false">
-                                        <v-icon>mdi-close-circle</v-icon>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                        <v-list>
-                            <v-list-item @click="() => { }">
-                                <v-list-item-action>
-                                    <v-icon>mdi-briefcase</v-icon>
-                                </v-list-item-action>
-                                <v-list-item-subtitle>john@gmail.com</v-list-item-subtitle>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-menu>
+                <personcard />
             </v-row>
 
         </v-card-text>
-
         <v-card-actions>
             <template>
                 <v-row justify="center">
@@ -197,6 +85,7 @@
 </template>
 
 <script>
+import personcard from '../components/person-card.vue';
 export default {
     data: () => ({
         loading: false,
@@ -205,9 +94,11 @@ export default {
         notifications: false,
         sound: true,
         widgets: false,
-        menu: false,
         type: '',
     }),
+    components: {
+        personcard,
+    },
     props: ['created_by', 'created_date', 'description', 'end_date', '_id', 'file', 'name', 'start_date'],
     methods: {
         reserve() {

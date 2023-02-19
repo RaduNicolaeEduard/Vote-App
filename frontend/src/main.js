@@ -61,7 +61,7 @@ setInterval(() => {
   if (Vue.prototype.$keycloak.authenticated) {
     refreshToken()
   }
-}, 1)
+}, 10000)
 
 axios.interceptors.request.use(
   async config => {

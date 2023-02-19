@@ -98,7 +98,7 @@ export default {
 
     data: () => ({
         tab: null,
-        dialog: true,
+        dialog: null,
         date: null,
         file: null,
         name: null,
