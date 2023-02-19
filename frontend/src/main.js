@@ -61,8 +61,10 @@ setInterval(() => {
   if (Vue.prototype.$keycloak.authenticated) {
     refreshToken()
   }
-}, 10000)
-
+  Vue.prototype.$keycloak.onTokenExpired = () => {
+    Vue.prototype.$keycloak.updateToken(30)
+}
+}, 1000)
 axios.interceptors.request.use(
   async config => {
     if (Vue.prototype.$keycloak.authenticated) {
