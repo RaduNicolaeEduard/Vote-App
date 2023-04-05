@@ -1,4 +1,4 @@
-ARG keycloak_version=latest
+ARG keycloak_version=21.0.0
 ARG keycloak_image_url=quay.io/keycloak/keycloak:${keycloak_version}
 
 FROM node:latest as keycloak_asset_builder
@@ -26,7 +26,7 @@ ENV KC_DB=postgres
 
 # Install custom providers
 # https://github.com/aerogear/keycloak-metrics-spi/
-RUN curl -sL https://github.com/aerogear/keycloak-metrics-spi/releases/download/2.5.3/keycloak-metrics-spi-2.5.3.jar -o /opt/keycloak/providers/keycloak-metrics-spi-2.5.3.jar
+# RUN curl -sL https://github.com/aerogear/keycloak-metrics-spi/releases/download/2.5.3/keycloak-metrics-spi-2.5.3.jar -o /opt/keycloak/providers/keycloak-metrics-spi-2.5.3.jar
 
 # copy asset build from above
 COPY --from=keycloak_asset_builder /keycloak_assets/theme /opt/keycloak/themes/
@@ -47,4 +47,4 @@ RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysi
 
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start --import-realm"]
+CMD ["start --import-realm --log-level=DEBUG"]
