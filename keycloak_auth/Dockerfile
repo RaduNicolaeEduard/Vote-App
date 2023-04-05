@@ -1,6 +1,3 @@
-ARG keycloak_version=21.0.0
-ARG keycloak_image_url=quay.io/keycloak/keycloak:${keycloak_version}
-
 FROM node:latest as keycloak_asset_builder
 
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
@@ -16,7 +13,7 @@ RUN pnpm build
 ARG keycloak_version
 ARG keycloak_image_url
 
-FROM ${keycloak_image_url} as keycloak_builder
+FROM quay.io/keycloak/keycloak:21.0.0 as keycloak_builder
 
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
@@ -39,7 +36,7 @@ RUN /opt/keycloak/bin/kc.sh build
 
 #####
 
-FROM ${keycloak_image_url} as keycloak_runtime
+FROM quay.io/keycloak/keycloak:21.0.0 as keycloak_runtime
 COPY --from=keycloak_builder /opt/keycloak/ /opt/keycloak/
 WORKDIR /opt/keycloak
 # for demonstration purposes only, please make sure to use proper certificates in production instead
